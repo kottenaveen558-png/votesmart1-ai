@@ -1,0 +1,32 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm install
+        npm run build
+    
+    - name: Build backend
+      run: |
+        cd backend
+        pip install -r requirements.txt
+    
+    - name: Check repo size
+      run: |
+        du -sh . || echo "Size check complete"
